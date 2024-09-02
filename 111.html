@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哔哩哔哩粉丝数显示</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .counter {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .counter h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .counter span {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="counter">
+    <h1>哔哩哔哩粉丝数</h1>
+    <span id="followerCount">加载中...</span>
+</div>
+
+<script>
+    async function fetchFollowerCount() {
+        const userId = '288785789';  // 你的哔哩哔哩UID
+        const url = `https://api.bilibili.com/x/relation/stat?vmid=${userId}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            if (data.code === 0) {
+                document.getElementById('followerCount').textContent = data.data.follower;
+            } else {
+                document.getElementById('followerCount').textContent = '无法获取粉丝数';
+            }
+        } catch (error) {
+            console.error('获取粉丝数时出错:', error);
+            document.getElementById('followerCount').textContent = '无法获取粉丝数';
+        }
+    }
+
+    window.onload = fetchFollowerCount;
+</script>
+
+</body>
+</html>
